@@ -134,9 +134,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void movimiento(KeyEvent event) {
         KeyCode kc = event.getCode();
-System.out.println(kc);
+
         if (kc != null) {
-            
             snake.posibleGiro(kc.toString());
         }
     }

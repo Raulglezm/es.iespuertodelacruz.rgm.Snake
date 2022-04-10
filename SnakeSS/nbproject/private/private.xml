@@ -4,7 +4,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/alumno/Escritorio/es.iespuertodelacruz.rgm.Snake/SnakeSS/src/snakess/controller/FXMLDocumentController.java</file>
+            <file>file:/home/alumno/Escritorio/es.iespuertodelacruz.rgm.Snake/SnakeSS/src/snakess/view/FXMLDocument.fxml</file>
             <file>file:/home/alumno/Escritorio/es.iespuertodelacruz.rgm.Snake/SnakeSS/src/snakess/model/Snake.java</file>
+            <file>file:/home/alumno/Escritorio/es.iespuertodelacruz.rgm.Snake/SnakeSS/src/snakess/model/Parte.java</file>
             <file>file:/home/alumno/Escritorio/es.iespuertodelacruz.rgm.Snake/SnakeSS/src/snakess/SnakeSS.java</file>
         </group>
     </open-files>
