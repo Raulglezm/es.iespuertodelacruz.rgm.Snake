@@ -12,23 +12,44 @@ import java.util.LinkedList;
  * @author alumno
  */
 public class Snake extends LinkedList<Parte> {
-
-    Parte parte = new Parte(100, 100);
+    
     private String direccion;
 
-    public void addParte(int x, int y) {
+    Parte parte = new Parte(100, 100, direccion);
+    
+    public void addParte(int x, int y, String direccion) {
 
-        this.addLast(new Parte(x, y));
+        this.addLast(new Parte(x, y, direccion));
 
     }
 
     public void avanzar() {
+        
+        System.out.println(this);
 
         this.removeLast(); // borro la ultima posicion del linkedList
+        
+        switch (this.getDireccion()) {
+            case "UP":
+                this.addFirst(new Parte(this.getFirst().getX(), this.getFirst().getY()-15, "UP"));//coordenadas (X, Y, ancho, largo)
+                this.direccion = "UP";
+                break;
 
-        this.addFirst(new Parte(this.getFirst().getX() + 10, this.getFirst().getY()));
+            case "DOWN":
+                this.addFirst(new Parte(this.getFirst().getX(), this.getFirst().getY()+15, "DOWN"));//coordenadas (X, Y, ancho, largo)
+                this.direccion = "DOWN";
+                break;
 
-        this.getFirst().getX();
+            case "RIGHT":
+                this.addFirst(new Parte(this.getFirst().getX()+15, this.getFirst().getY(), "RIGHT"));//coordenadas (X, Y, ancho, largo)
+                this.direccion = "RIGHT";
+                break;
+
+            case "LEFT":
+                this.addFirst(new Parte(this.getFirst().getX()-15, this.getFirst().getY(), "LEFT"));//coordenadas (X, Y, ancho, largo)
+                this.direccion = "LEFT";
+                break;
+        }
 
     }
 
@@ -60,7 +81,7 @@ public class Snake extends LinkedList<Parte> {
                 
             case "RIGHT":
                 if (!getDireccion().equals("LEFT")) {
-                    setDireccion("RIGTH");
+                    setDireccion("RIGHT");
                     esPosible = true;
                 }
                 break;

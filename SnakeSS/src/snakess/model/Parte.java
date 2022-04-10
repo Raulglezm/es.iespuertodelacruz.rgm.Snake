@@ -10,7 +10,8 @@ package snakess.model;
  * @author alumno
  */
 public class Parte {
-
+    
+    private String direccion;
     private int x;
     private int y;
     
@@ -25,10 +26,12 @@ public class Parte {
      * Constructor con dos parametros
      * @param x
      * @param y
+     * @param direccion
      */
-    public Parte(int x, int y) {
+    public Parte(int x, int y, String direccion) {
         this.x = x;
         this.y = y;
+        this.direccion = direccion;
     }
     
     //GETTERES Y SETTERS
@@ -47,6 +50,10 @@ public class Parte {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public String getDireccion() {
+        return direccion;
     }
 
 }

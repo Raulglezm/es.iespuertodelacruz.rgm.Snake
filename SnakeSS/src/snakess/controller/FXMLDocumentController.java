@@ -55,7 +55,7 @@ public class FXMLDocumentController implements Initializable {
         crearCuerpo();
         crearCuerpo();
         
-        snake.setDireccion("LEFT");
+        snake.setDireccion("RIGHT");
         
         
     }
@@ -88,17 +88,10 @@ public class FXMLDocumentController implements Initializable {
      */
     public void dibujarSnake() {
 
-        
-
-        gc.clearRect(15, 15, snake.getLast().getX(), snake.getLast().getY()); // borro la ultima posicion de gc
-
-        snake.avanzar();
-
         switch (snake.getDireccion()) {
             case "UP":
                 gc.fillRect(snake.getFirst().getX(), snake.getFirst().getY()-15, 15, 15);//coordenadas (X, Y, ancho, largo)
                 break;
-
             case "DOWN":
                 gc.fillRect(snake.getFirst().getX(), snake.getFirst().getY()+15, 15, 15);//coordenadas (X, Y, ancho, largo)
                 break;
@@ -108,21 +101,42 @@ public class FXMLDocumentController implements Initializable {
                 break;
 
             case "LEFT":
+                
                 gc.fillRect(snake.getFirst().getX()-15, snake.getFirst().getY(), 15, 15);//coordenadas (X, Y, ancho, largo)
                 break;
         }
         
         
+        
+        snake.avanzar();
+        
+        switch (snake.getLast().getDireccion()) {
+            case "UP":
+                    
+                break;
+            case "DOWN":
+                gc.clearRect(15, 15, snake.getLast().getX(), snake.getLast().getY()); // borro la ultima posicion de gc
+                break;
+
+            case "RIGHT":
+                gc.clearRect(15, 15, snake.getLast().getX(), snake.getLast().getY()); // borro la ultima posicion de gc
+                break;
+
+            case "LEFT":
+                
+                break;
+        }
+        
     }
 
     public void crearCuerpo() {
 
-        snake.addParte(snake.getLast().getX(), snake.getLast().getY());
+        snake.addParte(snake.getLast().getX(), snake.getLast().getY(), snake.getLast().getDireccion());
 
     }
 
     public void crearCuerpoInicio() {
-        snake.addParte(100, 100);
+        snake.addParte(100, 100, snake.getDireccion());
     }
 
     /**
