@@ -13,7 +13,6 @@ public class Parte {
 
     private int x;
     private int y;
-    private int direccion;
     
     /**
      * Constructor con un parametro
@@ -48,14 +47,6 @@ public class Parte {
 
     public void setY(int y) {
         this.y = y;
-    }
-
-    public int getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(int direccion) {
-        this.direccion = direccion;
     }
 
 }

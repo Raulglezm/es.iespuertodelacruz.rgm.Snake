@@ -6,7 +6,7 @@
 package snakess.controller;
 
 import java.net.URL;
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -17,8 +17,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.paint.Color;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import snakess.model.Parte;
 import snakess.model.Snake;
@@ -28,7 +28,7 @@ import snakess.model.Snake;
  * @author alumno
  */
 public class FXMLDocumentController implements Initializable {
-    
+
     Parte parte;
 
     @FXML
@@ -42,43 +42,41 @@ public class FXMLDocumentController implements Initializable {
 
     Timeline timeline;
 
-    int x;
-    int xPrimero;
-    int y;
-    int yPrimero;
-    
-
     @FXML
-    public void handleButtonAction(ActionEvent event) {
+    public void Iniciar(ActionEvent event) {
         timeline.play();
-        
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         gc = CnvMapa.getGraphicsContext2D();
         timeline = obtenerTimeline();
-        x = 100;
-        y = 100;
-        crearCuerpoInicio();crearCuerpo();crearCuerpo();
+        crearCuerpoInicio();
+        crearCuerpo();
+        crearCuerpo();
+        
+        snake.setDireccion("LEFT");
+        
+        
     }
-    
-     /**
+
+    /**
      * Se obtiene el timeline
+     *
      * @param velocidad
      * @return
      */
     Timeline obtenerTimeline() {
 
         Timeline tl = new Timeline(new KeyFrame(
-                Duration.millis(40), movimiento -> moverJuego()
+                Duration.millis(200), movimiento -> moverJuego()
         ));
 
         tl.setCycleCount(Animation.INDEFINITE);
 
         return tl;
     }
-    
+
     public void moverJuego() {
 
         dibujarSnake();
@@ -90,30 +88,57 @@ public class FXMLDocumentController implements Initializable {
      */
     public void dibujarSnake() {
 
-        // x = snake.getLast().getX(); valor x de la ultima posicion
-        // y = snake.getLast().getY(); valor y de la ultima posicion
         
-        // xPrimero = snake.getFirst().getX(); valor x de la primera posicion
-        // yPrimero = snake.getFirst().getY(); valor y de la primera posicion
-        
-        System.out.println(snake);
-        
-        gc.clearRect(10, 10, snake.getLast().getX(), snake.getLast().getY()); // borro la ultima posicion de gc
-        
+
+        gc.clearRect(15, 15, snake.getLast().getX(), snake.getLast().getY()); // borro la ultima posicion de gc
+
         snake.avanzar();
+
+        switch (snake.getDireccion()) {
+            case "UP":
+                gc.fillRect(snake.getFirst().getX(), snake.getFirst().getY()-15, 15, 15);//coordenadas (X, Y, ancho, largo)
+                break;
+
+            case "DOWN":
+                gc.fillRect(snake.getFirst().getX(), snake.getFirst().getY()+15, 15, 15);//coordenadas (X, Y, ancho, largo)
+                break;
+
+            case "RIGHT":
+                gc.fillRect(snake.getFirst().getX()+15, snake.getFirst().getY(), 15, 15);//coordenadas (X, Y, ancho, largo)
+                break;
+
+            case "LEFT":
+                gc.fillRect(snake.getFirst().getX()-15, snake.getFirst().getY(), 15, 15);//coordenadas (X, Y, ancho, largo)
+                break;
+        }
         
-        gc.fillRect(snake.getFirst().getX()+10, snake.getFirst().getY(), 10, 10);//coordenadas (X, Y, ancho, largo)
         
     }
-    
+
     public void crearCuerpo() {
 
         snake.addParte(snake.getLast().getX(), snake.getLast().getY());
 
     }
-    
-    public void crearCuerpoInicio(){
+
+    public void crearCuerpoInicio() {
         snake.addParte(100, 100);
+    }
+
+    /**
+     * Este metodo registra las teclas por teclados y manda a comprobar si es
+     * posible girar en el sentido deseado.
+     *
+     * @param event
+     */
+    @FXML
+    private void movimiento(KeyEvent event) {
+        KeyCode kc = event.getCode();
+System.out.println(kc);
+        if (kc != null) {
+            
+            snake.posibleGiro(kc.toString());
+        }
     }
 
 }
