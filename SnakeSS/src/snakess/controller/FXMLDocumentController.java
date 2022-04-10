@@ -87,7 +87,7 @@ public class FXMLDocumentController implements Initializable {
      * Este metodo dibuja la snake cada vez que avanza en su posicion
      */
     public void dibujarSnake() {
-
+        
         switch (snake.getDireccion()) {
             case "UP":
                 gc.fillRect(snake.getFirst().getX(), snake.getFirst().getY()-15, 15, 15);//coordenadas (X, Y, ancho, largo)
@@ -115,17 +115,18 @@ public class FXMLDocumentController implements Initializable {
                     
                 break;
             case "DOWN":
-                gc.clearRect(15, 15, snake.getLast().getX(), snake.getLast().getY()); // borro la ultima posicion de gc
+                    gc.clearRect(15, 15, snake.getLast().getX(), snake.getLast().getY()); // borro la ultima posicion de gc
                 break;
 
             case "RIGHT":
-                gc.clearRect(15, 15, snake.getLast().getX(), snake.getLast().getY()); // borro la ultima posicion de gc
+                    gc.clearRect(15, 15, snake.getLast().getX(), snake.getLast().getY()); // borro la ultima posicion de gc
                 break;
 
             case "LEFT":
-                
+                    
                 break;
         }
+        
         
     }
 
