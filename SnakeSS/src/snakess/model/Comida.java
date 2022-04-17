@@ -35,8 +35,6 @@ public class Comida {
         while (y % 15 != 0){
             y += 1;
         }
-        
-        
     }
 
     public int getX() {

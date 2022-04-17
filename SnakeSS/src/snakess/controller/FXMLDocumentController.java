@@ -6,6 +6,7 @@
 package snakess.controller;
 
 import java.net.URL;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -50,7 +51,7 @@ public class FXMLDocumentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // inicializacion de objetos
         snake = new Snake();
-        mapa = new Mapa();
+        mapa = new Mapa((int)CnvMapa.getWidth(), (int)CnvMapa.getHeight());
         comida = new Comida();
         
         // inicializcion dle graphics content
@@ -66,6 +67,8 @@ public class FXMLDocumentController implements Initializable {
         
         // Se crea la primera comida
         dibujarComida();
+        
+        dibujarMuros();
 
     }
 
@@ -123,16 +126,6 @@ public class FXMLDocumentController implements Initializable {
         
         
     }
-    
-    /**
-     * Este metodo se utiliza para realizar los pasos a seguir cuando la snak ealcanza una comida
-     */
-    public void serpienteHaComido(){
-        crearCuerpo();
-        dibujarSnake();
-        comida = new Comida();
-        dibujarComida();
-    }
 
     /**
      * Este metodo dibuja la snake cada vez que avanza en su posicion
@@ -162,25 +155,6 @@ public class FXMLDocumentController implements Initializable {
         snake.avanzar();
 
     }
-    
-    public void dibujarComida(){
-        gc.fillRect(comida.getX(), comida.getY(), 15, 15);
-    }
-
-    /**
-     * Este metodo se utiliza para sumar partes del cuerpo de la snake
-     */
-    public void crearCuerpo() {
-
-        snake.addParte(snake.getLast().getX(), snake.getLast().getY(), snake.getLast().getDireccion());
-    }
-
-    /**
-     * Este metodo se utiliza para añadir la cabeza inicial al cuerpo
-     */
-    public void crearCuerpoInicio() {
-        snake.addParte(60, 60, snake.getDireccion());
-    }
 
     /**
      * Este metodo registra las teclas por teclados y manda a comprobar si es
@@ -191,17 +165,50 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void movimiento(KeyEvent event) {
         KeyCode kc = event.getCode();
-
         if (kc != null) {
             snake.posibleGiro(kc.toString());
         }
     }
+
+    
+    //Metodos para limpiar codigo
     
     
-    public void newGame(){
+    /**
+     * Este metodo se utiliza para realizar los pasos a seguir cuando la snake alcanza una comida
+     */
+    public void serpienteHaComido(){
+        crearCuerpo();
+        dibujarSnake();
+        comida = new Comida();
+        dibujarComida();
+    }
+    /**
+     * Este metodo se utiliza para añadir la cabeza inicial al cuerpo
+     */
+    public void crearCuerpoInicio() {
+        snake.addParte(60, 60, snake.getDireccion());
+    }
+    /**
+     * Este metodo se utiliza para sumar partes del cuerpo de la snake
+     */
+    public void crearCuerpo() {
+        snake.addParte(snake.getLast().getX(), snake.getLast().getY(), snake.getLast().getDireccion());
+    }
+    /**
+     * Metodo que sire para dibujar la comida
+     */
+    public void dibujarComida(){
+        gc.fillRect(comida.getX(), comida.getY(), 15, 15);
+    }
+    /**
+     * metodo para dibujar los obstaculos
+     */
+    public void dibujarMuros(){
         
-        
-        
+        for (Mapa.Muro muro : mapa.muros) {
+            gc.fillRect(muro.getX(), muro.getY(), 15, 15);
+        }
     }
 
 }
