@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
+import snakess.model.Comida;
 import snakess.model.Mapa;
 import snakess.model.Parte;
 import snakess.model.Snake;
@@ -40,21 +41,31 @@ public class FXMLDocumentController implements Initializable {
 
     Snake snake;
     Mapa mapa;
+    Comida comida;
 
     Timeline timeline;
     boolean juegoInciado;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        // inicializacion de objetos
         snake = new Snake();
         mapa = new Mapa();
+        comida = new Comida();
+        
+        // inicializcion dle graphics content
         gc = CnvMapa.getGraphicsContext2D();
+        
+        //inicializacion del timeline
         timeline = obtenerTimeline();
-        crearCuerpoInicio();
-        crearCuerpo();
-        crearCuerpo();
-        snake.setDireccion("RIGHT");
+        
+        // inicializacion de la snake
+        crearCuerpoInicio();crearCuerpo();crearCuerpo();
         juegoInciado = false;
+        snake.setDireccion("RIGHT");
+        
+        // Se crea la primera comida
+        dibujarComida();
 
     }
 
@@ -75,7 +86,10 @@ public class FXMLDocumentController implements Initializable {
         return tl;
     }
     
-    
+    /**
+     * Metodo para inciar o parar el movimiento de la snake
+     * @param event 
+     */
     @FXML
     public void Iniciar(ActionEvent event) {
         
@@ -89,17 +103,35 @@ public class FXMLDocumentController implements Initializable {
         
     }
 
-    
+    /**
+     * En este metodo se mueve la serpiuente y se hace las comprobaciones
+     */
     public void moverJuego() {
         
-        if(snake.getFirst().getX() > (int)CnvMapa.getWidth() || snake.getFirst().getY() > (int)CnvMapa.getHeight()|| //Chocar contra paredes
+        if(snake.getFirst().getX() >= (int)CnvMapa.getWidth()-15  || //Chocar contra los bordes
+           snake.getFirst().getY() >= (int)CnvMapa.getHeight()-15 || 
            snake.getFirst().getX() < 0 || snake.getFirst().getY() < 0){
+            
+        }else if(snake.getFirst().getX() == comida.getX() &&  // comer comida
+                snake.getFirst().getY() == comida.getY()) {
+            serpienteHaComido();
+        }else if(false){ // chocar contra muros
             
         }else{
             dibujarSnake();
         }
         
-
+        
+    }
+    
+    /**
+     * Este metodo se utiliza para realizar los pasos a seguir cuando la snak ealcanza una comida
+     */
+    public void serpienteHaComido(){
+        crearCuerpo();
+        dibujarSnake();
+        comida = new Comida();
+        dibujarComida();
     }
 
     /**
@@ -130,6 +162,10 @@ public class FXMLDocumentController implements Initializable {
         snake.avanzar();
 
     }
+    
+    public void dibujarComida(){
+        gc.fillRect(comida.getX(), comida.getY(), 15, 15);
+    }
 
     /**
      * Este metodo se utiliza para sumar partes del cuerpo de la snake
@@ -143,7 +179,7 @@ public class FXMLDocumentController implements Initializable {
      * Este metodo se utiliza para añadir la cabeza inicial al cuerpo
      */
     public void crearCuerpoInicio() {
-        snake.addParte(100, 100, snake.getDireccion());
+        snake.addParte(60, 60, snake.getDireccion());
     }
 
     /**

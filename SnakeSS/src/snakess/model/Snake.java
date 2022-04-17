@@ -25,7 +25,7 @@ public class Snake extends LinkedList<Parte> {
 
     public void avanzar() {
         
-        System.out.println(this);
+        //System.out.println(this);
 
         this.removeLast(); // borro la ultima posicion del linkedList
         
