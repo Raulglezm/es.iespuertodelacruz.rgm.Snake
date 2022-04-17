@@ -48,8 +48,8 @@ public class Mapa {
          * Constructo de la clase anidada Muro
          */
         public Muro(){
-            x = rnd.nextInt(415);
-            y = rnd.nextInt(400);
+            x = rnd.nextInt(400);
+            y = rnd.nextInt(385);
             colocar();
         }
 
