@@ -50,33 +50,12 @@ public class FXMLDocumentController implements Initializable {
 
     Timeline timeline;
     boolean juegoInciado;
+    @FXML
+    private Button btnEmpezar1;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // inicializacion de objetos
-        snake = new Snake();
-        mapa = new Mapa((int) CnvMapa.getWidth(), (int) CnvMapa.getHeight());
-        comida = new Comida();
-
-        // inicializcion dle graphics content
-        gc = CnvMapa.getGraphicsContext2D();
-
-        //inicializacion del timeline
-        timeline = obtenerTimeline();
-
-        // inicializacion de la snake
-        crearCuerpoInicio();
-        crearCuerpo();
-        crearCuerpo();
-        juegoInciado = false;
-        snake.setDireccion("RIGHT");
-
-        // Se crea la primera comida
-        dibujarComida();
-
-        dibujarMuros();
-        
-        perder = new Alert(Alert.AlertType.INFORMATION ,"Choque!!!");
+        perder = new Alert(Alert.AlertType.INFORMATION, "Choque!!!");
 
     }
 
@@ -119,38 +98,26 @@ public class FXMLDocumentController implements Initializable {
      * En este metodo se mueve la serpiuente y se hace las comprobaciones
      */
     public void moverJuego() {
-        
-        if(comprobarChoque()){
-            
-            timeline.stop();
-            perder.showAndWait();
 
-        } else  if (snake.getFirst().getX() == comida.getX()
+        if (comprobarChoque()) {
+
+            mostrarAlerta();
+            timeline.stop();
+
+        } else if (snake.getFirst().getX() == comida.getX()
                 && // comer comida
                 snake.getFirst().getY() == comida.getY()) {
             serpienteHaComido();
-        }else{
+        } else {
             dibujarSnake();
         }
     }
-    
-    public boolean comprobarChoque(){
-        
-        if (mapa.muros.stream().anyMatch((muro) -> (snake.getFirst().getX() == muro.getX() && snake.getFirst().getY() == muro.getY()))) {
-            return true;
-        }
-        
-        if (snake.getFirst().getX() >= (int) CnvMapa.getWidth()-15|| //Chocar contra los bordes
-                snake.getFirst().getY() >= (int) CnvMapa.getHeight()- 15
-                || snake.getFirst().getX() < 0 || snake.getFirst().getY() < 0) {
-                timeline.stop();
-                return true;
-        }
-        
-        return false;
-        
+
+    public void mostrarAlerta() {
+
+        perder.show();
+
     }
-    
 
     /**
      * Este metodo dibuja la snake cada vez que avanza en su posicion
@@ -198,6 +165,38 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
+    @FXML
+    private void nuevaPartida(ActionEvent event) {
+
+        if (!juegoInciado) {
+            limpiar();
+
+            snake = new Snake();
+            mapa = new Mapa((int) CnvMapa.getWidth(), (int) CnvMapa.getHeight());
+            comida = new Comida();
+
+            // inicializcion dle graphics content
+            gc = CnvMapa.getGraphicsContext2D();
+
+            //inicializacion del timeline
+            timeline = obtenerTimeline();
+
+            // inicializacion de la snake
+            crearCuerpoInicio();
+            crearCuerpo();
+            crearCuerpo();
+
+            juegoInciado = false;
+            snake.setDireccion("RIGHT");
+
+            // Se crea la primera comida
+            dibujarComida();
+
+            dibujarMuros();
+        }
+
+    }
+
     //Metodos para limpiar codigo
     /**
      * Este metodo se utiliza para realizar los pasos a seguir cuando la snake
@@ -208,6 +207,36 @@ public class FXMLDocumentController implements Initializable {
         dibujarSnake();
         comida = new Comida();
         dibujarComida();
+    }
+
+    public boolean comprobarChoque() {
+
+        if (mapa.muros.stream().anyMatch((muro) -> (snake.getFirst().getX() == muro.getX() && snake.getFirst().getY() == muro.getY()))) {
+            juegoInciado = false;
+            timeline.stop();
+            return true;
+        }
+
+        if (snake.getFirst().getX() >= (int) CnvMapa.getWidth()
+                || //Chocar contra los bordes
+                snake.getFirst().getY() >= (int) CnvMapa.getHeight()
+                || snake.getFirst().getX() < 0 || snake.getFirst().getY() < 0) {
+
+            timeline.stop();
+            juegoInciado = false;
+            return true;
+        }
+
+        for (int i = 2; i < snake.size(); i++) {
+            Parte partePrueba = snake.get(i);
+            if (snake.getFirst().getX() == partePrueba.getX() && snake.getFirst().getY() == partePrueba.getY()) {
+                timeline.stop();
+                juegoInciado = false;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -229,8 +258,21 @@ public class FXMLDocumentController implements Initializable {
      * Metodo que sire para dibujar la comida
      */
     public void dibujarComida() {
-        gc.setFill(Color.RED);
-        gc.fillRect(comida.getX(), comida.getY(), 15, 15);
+
+        boolean colocable = true;
+
+        for (Mapa.Muro muro : mapa.muros) {
+
+            if (muro.getX() == comida.getX() && muro.getY() == comida.getY()) {
+                colocable = false;
+            }
+
+        }
+
+        if (colocable) {
+            gc.setFill(Color.RED);
+            gc.fillRect(comida.getX(), comida.getY(), 15, 15);
+        }
     }
 
     /**
@@ -272,6 +314,10 @@ public class FXMLDocumentController implements Initializable {
                 return Color.SLATEBLUE;
         }
         return Color.BLACK;
+    }
+
+    private void limpiar() {
+        CnvMapa.getGraphicsContext2D().clearRect(0, 0, 403, 403);
     }
 
 }

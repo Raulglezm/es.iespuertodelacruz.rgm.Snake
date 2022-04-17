@@ -9,7 +9,7 @@ import java.util.Random;
 
 /**
  *
- * @author alumno
+ * @author Raúl
  */
 public class Comida {
     

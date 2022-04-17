@@ -9,7 +9,7 @@ import java.util.LinkedList;
 
 /**
  *
- * @author alumno
+ * @author Raúl
  */
 public class Snake extends LinkedList<Parte> {
     
@@ -19,7 +19,7 @@ public class Snake extends LinkedList<Parte> {
     
     public void addParte(int x, int y, String direccion) {
 
-        this.addLast(new Parte(x, y, direccion));
+        this.addLast(new Parte(x+15, y+15, direccion));
 
     }
 

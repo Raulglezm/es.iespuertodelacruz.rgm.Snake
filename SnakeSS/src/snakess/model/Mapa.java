@@ -11,7 +11,7 @@ import java.util.Random;
 
 /**
  *
- * @author Hari
+ * @author Raúl González Martín
  */
 public class Mapa {
     

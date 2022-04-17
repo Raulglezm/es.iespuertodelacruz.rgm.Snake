@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author alumno
+ * @author Raúl
  */
 public class SnakeSS extends Application {
     

@@ -1,0 +1,43 @@
+/* 
+    Created on : 05-abr-2022, 21:32:26
+    Author     : Raúl
+*/
+
+/*.button{
+    -fx-stroke: #000000;
+    -fx-stroke-width: 10px;
+    -fx-stroke-dash-array: 1000;
+    -fx-stroke-dash-offset:100;
+}
+*/
+
+.root{
+    -fx-background-color: #eaeaf2;
+}
+
+.button{
+    -fx-background-color:
+            #000000,
+            linear-gradient(#fffff0 20%, #1f2429 90%),
+            linear-gradient(#19222b, #181d18),
+            radial-gradient(center 50% 0%, radius 100%, rgba(124,134,168,0.9), rgba(233,233,233,0));
+    -fx-background-insets: 4,1,2,0;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-background-radius: 4,2,1,3;
+}
+.button {
+    -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.9) , 1, 0.0 , 0 , 1 );
+}
+.button:hover {
+    -fx-background-color:
+            #030c0a,
+            linear-gradient(#fffff0 30%, #1f2429 90%),
+            linear-gradient(#1b1a3c, #000000),
+            radial-gradient(center 50% 0%, radius 100%, rgba(233,233,233,0),rgba(124,134,168,0.9) );
+    -fx-background-radius: 4,2,1,3;
+    -fx-background-insets: 4,1,2,0;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
