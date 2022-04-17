@@ -108,3 +108,4 @@ public class Snake extends LinkedList<Parte> {
     }
 
 }
+

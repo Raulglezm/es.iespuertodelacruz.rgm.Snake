@@ -22,7 +22,7 @@ public class SnakeSS extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/snakess/view/FXMLDocument.fxml"));
         
         Scene scene = new Scene(root);
-        
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }

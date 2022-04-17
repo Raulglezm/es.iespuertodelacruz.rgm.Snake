@@ -7,7 +7,7 @@ package snakess.model;
 
 /**
  *
- * @author alumno
+ * @author Raúl González Martín
  */
 public class Parte {
     

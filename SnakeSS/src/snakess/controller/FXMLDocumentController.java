@@ -6,7 +6,6 @@
 package snakess.controller;
 
 import java.net.URL;
-import java.util.HashSet;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -20,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
+import snakess.model.Mapa;
 import snakess.model.Parte;
 import snakess.model.Snake;
 
@@ -38,26 +38,24 @@ public class FXMLDocumentController implements Initializable {
 
     GraphicsContext gc;
 
-    Snake snake = new Snake();
+    Snake snake;
+    Mapa mapa;
 
     Timeline timeline;
-
-    @FXML
-    public void Iniciar(ActionEvent event) {
-        timeline.play();
-    }
+    boolean juegoInciado;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        snake = new Snake();
+        mapa = new Mapa();
         gc = CnvMapa.getGraphicsContext2D();
         timeline = obtenerTimeline();
         crearCuerpoInicio();
         crearCuerpo();
         crearCuerpo();
-        
         snake.setDireccion("RIGHT");
-        
-        
+        juegoInciado = false;
+
     }
 
     /**
@@ -69,17 +67,38 @@ public class FXMLDocumentController implements Initializable {
     Timeline obtenerTimeline() {
 
         Timeline tl = new Timeline(new KeyFrame(
-                Duration.millis(200), movimiento -> moverJuego()
+                Duration.millis(100), movimiento -> moverJuego()
         ));
 
         tl.setCycleCount(Animation.INDEFINITE);
 
         return tl;
     }
+    
+    
+    @FXML
+    public void Iniciar(ActionEvent event) {
+        
+        if (juegoInciado){
+            timeline.stop();
+            juegoInciado = false;
+        }else{
+            timeline.play();
+            juegoInciado = true;
+        }
+        
+    }
 
+    
     public void moverJuego() {
-
-        dibujarSnake();
+        
+        if(snake.getFirst().getX() > (int)CnvMapa.getWidth() || snake.getFirst().getY() > (int)CnvMapa.getHeight()|| //Chocar contra paredes
+           snake.getFirst().getX() < 0 || snake.getFirst().getY() < 0){
+            
+        }else{
+            dibujarSnake();
+        }
+        
 
     }
 
@@ -87,55 +106,42 @@ public class FXMLDocumentController implements Initializable {
      * Este metodo dibuja la snake cada vez que avanza en su posicion
      */
     public void dibujarSnake() {
-        
+
+        gc.clearRect(snake.getLast().getX(), snake.getLast().getY(), 15, 15); // borro la ultima posicion de gc
+
         switch (snake.getDireccion()) {
             case "UP":
-                gc.fillRect(snake.getFirst().getX(), snake.getFirst().getY()-15, 15, 15);//coordenadas (X, Y, ancho, largo)
+                gc.fillRect(snake.getFirst().getX(), snake.getFirst().getY() - 15, 15, 15);//coordenadas (X, Y, ancho, largo)
                 break;
             case "DOWN":
-                gc.fillRect(snake.getFirst().getX(), snake.getFirst().getY()+15, 15, 15);//coordenadas (X, Y, ancho, largo)
+                gc.fillRect(snake.getFirst().getX(), snake.getFirst().getY() + 15, 15, 15);//coordenadas (X, Y, ancho, largo)
                 break;
 
             case "RIGHT":
-                gc.fillRect(snake.getFirst().getX()+15, snake.getFirst().getY(), 15, 15);//coordenadas (X, Y, ancho, largo)
+                gc.fillRect(snake.getFirst().getX() + 15, snake.getFirst().getY(), 15, 15);//coordenadas (X, Y, ancho, largo)
                 break;
 
             case "LEFT":
-                
-                gc.fillRect(snake.getFirst().getX()-15, snake.getFirst().getY(), 15, 15);//coordenadas (X, Y, ancho, largo)
+
+                gc.fillRect(snake.getFirst().getX() - 15, snake.getFirst().getY(), 15, 15);//coordenadas (X, Y, ancho, largo)
                 break;
         }
-        
-        
-        
+
         snake.avanzar();
-        
-        switch (snake.getLast().getDireccion()) {
-            case "UP":
-                    
-                break;
-            case "DOWN":
-                    gc.clearRect(15, 15, snake.getLast().getX(), snake.getLast().getY()); // borro la ultima posicion de gc
-                break;
 
-            case "RIGHT":
-                    gc.clearRect(15, 15, snake.getLast().getX(), snake.getLast().getY()); // borro la ultima posicion de gc
-                break;
-
-            case "LEFT":
-                    
-                break;
-        }
-        
-        
     }
 
+    /**
+     * Este metodo se utiliza para sumar partes del cuerpo de la snake
+     */
     public void crearCuerpo() {
 
         snake.addParte(snake.getLast().getX(), snake.getLast().getY(), snake.getLast().getDireccion());
-
     }
 
+    /**
+     * Este metodo se utiliza para añadir la cabeza inicial al cuerpo
+     */
     public void crearCuerpoInicio() {
         snake.addParte(100, 100, snake.getDireccion());
     }
@@ -153,6 +159,13 @@ public class FXMLDocumentController implements Initializable {
         if (kc != null) {
             snake.posibleGiro(kc.toString());
         }
+    }
+    
+    
+    public void newGame(){
+        
+        
+        
     }
 
 }
