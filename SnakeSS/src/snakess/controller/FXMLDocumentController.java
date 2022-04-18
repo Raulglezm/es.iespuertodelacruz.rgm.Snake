@@ -18,6 +18,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
@@ -260,6 +261,8 @@ public class FXMLDocumentController implements Initializable {
     public void dibujarComida() {
 
         boolean colocable = true;
+        
+        
 
         for (Mapa.Muro muro : mapa.muros) {
 
@@ -268,10 +271,22 @@ public class FXMLDocumentController implements Initializable {
             }
 
         }
-
+        
+        for (Parte parte1 : snake) {
+            if (parte1.getX() == comida.getX() && parte1.getY() == comida.getY()) {
+                colocable = false;
+            }
+        }
         if (colocable) {
             gc.setFill(Color.RED);
             gc.fillRect(comida.getX(), comida.getY(), 15, 15);
+            gc.drawImage(comida.getManz(), comida.getX(), comida.getY());
+            
+        }
+        
+        if (!colocable){
+            comida = new Comida();
+            dibujarComida();
         }
     }
 

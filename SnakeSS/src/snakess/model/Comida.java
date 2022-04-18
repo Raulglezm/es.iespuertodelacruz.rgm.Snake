@@ -5,7 +5,12 @@
  */
 package snakess.model;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
+import javafx.scene.image.Image;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -13,8 +18,9 @@ import java.util.Random;
  */
 public class Comida {
     
-    int x;
-    int y;
+    private int x;
+    private int y;
+    private Image manz;
     
     Random rnd = new Random();
     
@@ -22,8 +28,12 @@ public class Comida {
      * Constructo de la clase
      */
     public Comida(){
-        x = rnd.nextInt(400);
-        y = rnd.nextInt(385);
+        x = rnd.nextInt(400-15);
+        y = rnd.nextInt(385-15);
+
+        this.manz = ImageIO.read(new File("c:\\manzana.png"));
+                //ImageIO.read(new File("c:\\manzana.png"));
+
         colocar();
     }
     
@@ -53,12 +63,12 @@ public class Comida {
         this.y = y;
     }
 
-    public Random getRnd() {
-        return rnd;
+    public BufferedImage getManz() {
+        return manz;
     }
 
-    public void setRnd(Random rnd) {
-        this.rnd = rnd;
+    public void setManz(BufferedImage manz) {
+        this.manz = manz;
     }
     
 }
